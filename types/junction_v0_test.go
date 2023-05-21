@@ -32,21 +32,24 @@ var (
 	}
 	testJunction2 = JunctionV0{
 		IsParachain: true,
-		ParachainID: 11,
+		ParachainID: NewUCompactFromUInt(11),
 	}
 	testJunction3 = JunctionV0{
 		IsAccountID32: true,
 		AccountID32NetworkID: NetworkID{
 			IsAny: true,
 		},
-		AccountID: []U8{1, 2, 3},
+		AccountID: [32]U8{
+			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+			17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+		},
 	}
 	testJunction4 = JunctionV0{
 		IsAccountIndex64: true,
 		AccountIndex64NetworkID: NetworkID{
 			IsAny: true,
 		},
-		AccountIndex: 16,
+		AccountIndex: NewUCompactFromUInt(16),
 	}
 	testJunction5 = JunctionV0{
 		IsAccountKey20: true,
@@ -60,7 +63,7 @@ var (
 	}
 	testJunction7 = JunctionV0{
 		IsGeneralIndex: true,
-		GeneralIndex:   NewU128(*big.NewInt(42)),
+		GeneralIndex:   NewUCompact(big.NewInt(42)),
 	}
 	testJunction8 = JunctionV0{
 		IsGeneralKey: true,
@@ -145,12 +148,12 @@ func TestJunctionV0_EncodeDecode(t *testing.T) {
 func TestJunctionV0_Encode(t *testing.T) {
 	AssertEncode(t, []EncodingAssert{
 		{testJunction1, MustHexDecodeString("0x00")},
-		{testJunction2, MustHexDecodeString("0x010b000000")},
-		{testJunction3, MustHexDecodeString("0x02000c010203")},
-		{testJunction4, MustHexDecodeString("0x03001000000000000000")},
-		{testJunction5, MustHexDecodeString("0x040300")},
+		{testJunction2, MustHexDecodeString("0x012c")},
+		{testJunction3, MustHexDecodeString("0x02000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20")},
+		{testJunction4, MustHexDecodeString("0x030040")},
+		{testJunction5, MustHexDecodeString("0x04030000000000000000000000000000000000000000")},
 		{testJunction6, MustHexDecodeString("0x0504")},
-		{testJunction7, MustHexDecodeString("0x062a000000000000000000000000000000")},
+		{testJunction7, MustHexDecodeString("0x06a8")},
 		{testJunction8, MustHexDecodeString("0x07080608")},
 		{testJunction9, MustHexDecodeString("0x08")},
 		{testJunction10, MustHexDecodeString("0x090000")},
@@ -160,12 +163,12 @@ func TestJunctionV0_Encode(t *testing.T) {
 func TestJunctionV0_Decode(t *testing.T) {
 	AssertDecode(t, []DecodingAssert{
 		{MustHexDecodeString("0x00"), testJunction1},
-		{MustHexDecodeString("0x010b000000"), testJunction2},
-		{MustHexDecodeString("0x02000c010203"), testJunction3},
-		{MustHexDecodeString("0x03001000000000000000"), testJunction4},
-		{MustHexDecodeString("0x040300"), testJunction5},
+		{MustHexDecodeString("0x012c"), testJunction2},
+		{MustHexDecodeString("0x02000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"), testJunction3},
+		{MustHexDecodeString("0x030040"), testJunction4},
+		{MustHexDecodeString("0x04030000000000000000000000000000000000000000"), testJunction5},
 		{MustHexDecodeString("0x0504"), testJunction6},
-		{MustHexDecodeString("0x062a000000000000000000000000000000"), testJunction7},
+		{MustHexDecodeString("0x06a8"), testJunction7},
 		{MustHexDecodeString("0x07080608"), testJunction8},
 		{MustHexDecodeString("0x08"), testJunction9},
 		{MustHexDecodeString("0x090000"), testJunction10},

@@ -22,25 +22,25 @@ import (
 
 type JunctionV1 struct {
 	IsParachain bool
-	ParachainID UCompact
+	ParachainID UCompact // Compact<u32>
 
 	IsAccountID32        bool
 	AccountID32NetworkID NetworkID
-	AccountID            []U8
+	AccountID            [32]U8
 
 	IsAccountIndex64        bool
 	AccountIndex64NetworkID NetworkID
-	AccountIndex            U64
+	AccountIndex            UCompact // Compact<u64>
 
 	IsAccountKey20        bool
 	AccountKey20NetworkID NetworkID
-	AccountKey            []U8
+	AccountKey            [20]U8
 
 	IsPalletInstance bool
 	PalletIndex      U8
 
 	IsGeneralIndex bool
-	GeneralIndex   U128
+	GeneralIndex   UCompact // // Compact<u128>
 
 	IsGeneralKey bool
 	GeneralKey   []U8

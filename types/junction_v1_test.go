@@ -36,14 +36,17 @@ var (
 		AccountID32NetworkID: NetworkID{
 			IsAny: true,
 		},
-		AccountID: []U8{1, 2, 3},
+		AccountID: [32]U8{
+			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+			17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+		},
 	}
 	testJunctionV1n3 = JunctionV1{
 		IsAccountIndex64: true,
 		AccountIndex64NetworkID: NetworkID{
 			IsAny: true,
 		},
-		AccountIndex: 16,
+		AccountIndex: NewUCompactFromUInt(16),
 	}
 	testJunctionV1n4 = JunctionV1{
 		IsAccountKey20: true,
@@ -57,7 +60,7 @@ var (
 	}
 	testJunctionV1n6 = JunctionV1{
 		IsGeneralIndex: true,
-		GeneralIndex:   NewU128(*big.NewInt(42)),
+		GeneralIndex:   NewUCompact(big.NewInt(42)),
 	}
 	testJunctionV1n7 = JunctionV1{
 		IsGeneralKey: true,
@@ -140,11 +143,11 @@ func TestJunctionV1_EncodeDecode(t *testing.T) {
 func TestJunctionV1_Encode(t *testing.T) {
 	AssertEncode(t, []EncodingAssert{
 		{testJunctionV1n1, MustHexDecodeString("0x002c")},
-		{testJunctionV1n2, MustHexDecodeString("0x01000c010203")},
-		{testJunctionV1n3, MustHexDecodeString("0x02001000000000000000")},
-		{testJunctionV1n4, MustHexDecodeString("0x030300")},
+		{testJunctionV1n2, MustHexDecodeString("0x01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20")},
+		{testJunctionV1n3, MustHexDecodeString("0x020040")},
+		{testJunctionV1n4, MustHexDecodeString("0x03030000000000000000000000000000000000000000")},
 		{testJunctionV1n5, MustHexDecodeString("0x0404")},
-		{testJunctionV1n6, MustHexDecodeString("0x052a000000000000000000000000000000")},
+		{testJunctionV1n6, MustHexDecodeString("0x05a8")},
 		{testJunctionV1n7, MustHexDecodeString("0x06080608")},
 		{testJunctionV1n8, MustHexDecodeString("0x07")},
 		{testJunctionV1n9, MustHexDecodeString("0x080000")},
@@ -154,11 +157,11 @@ func TestJunctionV1_Encode(t *testing.T) {
 func TestJunctionV1_Decode(t *testing.T) {
 	AssertDecode(t, []DecodingAssert{
 		{MustHexDecodeString("0x002c"), testJunctionV1n1},
-		{MustHexDecodeString("0x01000c010203"), testJunctionV1n2},
-		{MustHexDecodeString("0x02001000000000000000"), testJunctionV1n3},
-		{MustHexDecodeString("0x030300"), testJunctionV1n4},
+		{MustHexDecodeString("0x01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"), testJunctionV1n2},
+		{MustHexDecodeString("0x020040"), testJunctionV1n3},
+		{MustHexDecodeString("0x03030000000000000000000000000000000000000000"), testJunctionV1n4},
 		{MustHexDecodeString("0x0404"), testJunctionV1n5},
-		{MustHexDecodeString("0x052a000000000000000000000000000000"), testJunctionV1n6},
+		{MustHexDecodeString("0x05a8"), testJunctionV1n6},
 		{MustHexDecodeString("0x06080608"), testJunctionV1n7},
 		{MustHexDecodeString("0x07"), testJunctionV1n8},
 		{MustHexDecodeString("0x080000"), testJunctionV1n9},
@@ -307,31 +310,31 @@ func TestJunctionsV1_Encode(t *testing.T) {
 		},
 		{
 			testJunctionsV1n3,
-			MustHexDecodeString("0x02002c01000c010203"),
+			MustHexDecodeString("0x02002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"),
 		},
 		{
 			testJunctionsV1n4,
-			MustHexDecodeString("0x03002c01000c01020302001000000000000000"),
+			MustHexDecodeString("0x03002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20020040"),
 		},
 		{
 			testJunctionsV1n5,
-			MustHexDecodeString("0x04002c01000c01020302001000000000000000030300"),
+			MustHexDecodeString("0x04002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000"),
 		},
 		{
 			testJunctionsV1n6,
-			MustHexDecodeString("0x05002c01000c010203020010000000000000000303000404"),
+			MustHexDecodeString("0x05002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20020040030300000000000000000000000000000000000000000404"),
 		},
 		{
 			testJunctionsV1n7,
-			MustHexDecodeString("0x06002c01000c010203020010000000000000000303000404052a000000000000000000000000000000"),
+			MustHexDecodeString("0x06002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000040405a8"),
 		},
 		{
 			testJunctionsV1n8,
-			MustHexDecodeString("0x07002c01000c010203020010000000000000000303000404052a00000000000000000000000000000006080608"),
+			MustHexDecodeString("0x07002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000040405a806080608"),
 		},
 		{
 			testJunctionsV1n9,
-			MustHexDecodeString("0x08002c01000c010203020010000000000000000303000404052a0000000000000000000000000000000608060807"),
+			MustHexDecodeString("0x08002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000040405a80608060807"),
 		},
 	})
 }
@@ -347,31 +350,31 @@ func TestJunctionsV1_Decode(t *testing.T) {
 			testJunctionsV1n2,
 		},
 		{
-			MustHexDecodeString("0x02002c01000c010203"),
+			MustHexDecodeString("0x02002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"),
 			testJunctionsV1n3,
 		},
 		{
-			MustHexDecodeString("0x03002c01000c01020302001000000000000000"),
+			MustHexDecodeString("0x03002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20020040"),
 			testJunctionsV1n4,
 		},
 		{
-			MustHexDecodeString("0x04002c01000c01020302001000000000000000030300"),
+			MustHexDecodeString("0x04002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000"),
 			testJunctionsV1n5,
 		},
 		{
-			MustHexDecodeString("0x05002c01000c010203020010000000000000000303000404"),
+			MustHexDecodeString("0x05002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20020040030300000000000000000000000000000000000000000404"),
 			testJunctionsV1n6,
 		},
 		{
-			MustHexDecodeString("0x06002c01000c010203020010000000000000000303000404052a000000000000000000000000000000"),
+			MustHexDecodeString("0x06002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000040405a8"),
 			testJunctionsV1n7,
 		},
 		{
-			MustHexDecodeString("0x07002c01000c010203020010000000000000000303000404052a00000000000000000000000000000006080608"),
+			MustHexDecodeString("0x07002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000040405a806080608"),
 			testJunctionsV1n8,
 		},
 		{
-			MustHexDecodeString("0x08002c01000c010203020010000000000000000303000404052a0000000000000000000000000000000608060807"),
+			MustHexDecodeString("0x08002c01000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2002004003030000000000000000000000000000000000000000040405a80608060807"),
 			testJunctionsV1n9,
 		},
 	})

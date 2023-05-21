@@ -69,7 +69,7 @@ type AssetInstance struct {
 	IsUndefined bool
 
 	IsIndex bool
-	Index   U128
+	Index   UCompact // Compact<u128>
 
 	IsArray4 bool
 	Array4   [4]U8
@@ -256,25 +256,25 @@ type MultiAssetV0 struct {
 	AllAbstractNonFungibleClass []U8
 
 	IsAllConcreteFungible bool
-	AllConcreteFungibleID MultiLocationV1
+	AllConcreteFungibleID MultiLocationV0
 
 	IsAllConcreteNonFungible    bool
-	AllConcreteNonFungibleClass MultiLocationV1
+	AllConcreteNonFungibleClass MultiLocationV0
 
 	IsAbstractFungible bool
 	AbstractFungibleID []U8
-	AbstractFungible   U128
+	AbstractFungible   UCompact // Compact<u128>
 
 	IsAbstractNonFungible       bool
 	AbstractNonFungibleClass    []U8
 	AbstractNonFungibleInstance AssetInstance
 
 	IsConcreteFungible     bool
-	ConcreteFungibleID     MultiLocationV1
-	ConcreteFungibleAmount U128
+	ConcreteFungibleID     MultiLocationV0
+	ConcreteFungibleAmount UCompact // Compact<u128>
 
 	IsConcreteNonFungible       bool
-	ConcreteNonFungibleClass    MultiLocationV1
+	ConcreteNonFungibleClass    MultiLocationV0
 	ConcreteNonFungibleInstance AssetInstance
 }
 
