@@ -24,6 +24,7 @@ import (
 )
 
 type Chain interface {
+	SubscribeAllHeads() (*AllHeadsSubscription, error)
 	SubscribeFinalizedHeads() (*FinalizedHeadsSubscription, error)
 	SubscribeNewHeads() (*NewHeadsSubscription, error)
 	GetBlockHash(blockNumber uint64) (types.Hash, error)
